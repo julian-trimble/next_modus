@@ -1,0 +1,566 @@
+---
+description: When adding Modus Icons
+alwaysApply: false
+---
+
+# Modus Icons Reference & Validation
+
+**Remember**: Invalid icon names fail silently - always test your icons render correctly.
+**CRITICAL**: Modus Icons are the ONLY icon system allowed. Always validate icon names before using them.
+
+## Icon Validation Process (MANDATORY)
+
+### Step 1: Check Icon Existence
+
+Before using any icon, verify it exists in the official Modus Icons collection.
+
+### Step 2: Use Correct Syntax
+
+```tsx
+// ✅ REQUIRED - Modus icons only
+<i className="modus-icons">icon_name</i>;
+
+// ❌ FORBIDDEN - Other icon libraries
+import { Icon } from "lucide-react"; // NOT ALLOWED
+import { FaIcon } from "react-icons"; // NOT ALLOWED
+import { Icon } from "@heroicons/react"; // NOT ALLOWED
+```
+
+### Step 3: Validate Rendering
+
+Test that the icon renders correctly. Invalid names result in no icon display.
+
+## Common Icon Categories
+
+### Navigation & Actions
+
+```tsx
+<i className="modus-icons">menu</i>           // Hamburger menu
+<i className="modus-icons">close</i>          // Close/X button
+<i className="modus-icons">arrow_back</i>     // Back navigation
+<i className="modus-icons">arrow_next</i>     // Forward navigation
+<i className="modus-icons">home</i>           // Home page
+<i className="modus-icons">dashboard</i>      // Dashboard
+<i className="modus-icons">search</i>         // Search functionality
+<i className="modus-icons">filter</i>         // Filter controls
+<i className="modus-icons">settings</i>       // Settings/configuration
+```
+
+### CRUD Operations
+
+```tsx
+<i className="modus-icons">add</i>              // Add/create new
+<i className="modus-icons">edit_combination</i> // Edit existing
+<i className="modus-icons">delete</i>           // Delete/remove
+<i className="modus-icons">save_disk</i>        // Save data
+<i className="modus-icons">copy_content</i>     // Copy content
+<i className="modus-icons">download</i>         // Download files
+<i className="modus-icons">upload</i>           // Upload files
+```
+
+### Status & Feedback
+
+```tsx
+<i className="modus-icons">check_circle</i>     // Success/completed
+<i className="modus-icons">cancel_circle</i>    // Error/cancelled
+<i className="modus-icons">warning</i>          // Warning state
+<i className="modus-icons">info</i>             // Information
+<i className="modus-icons">help</i>             // Help/assistance
+<i className="modus-icons">alert</i>            // Alert/attention
+```
+
+### Content Types
+
+```tsx
+<i className="modus-icons">file</i>           // Generic file
+<i className="modus-icons">folder_open</i>    // Open folder
+<i className="modus-icons">folder_closed</i>  // Closed folder
+<i className="modus-icons">document</i>       // Document file
+<i className="modus-icons">image</i>          // Image file
+<i className="modus-icons">video</i>          // Video file
+<i className="modus-icons">calendar</i>       // Calendar/dates
+<i className="modus-icons">email</i>          // Email/messages
+```
+
+### User & Account
+
+```tsx
+<i className="modus-icons">person</i>         // Single user
+<i className="modus-icons">people_group</i>   // Multiple users
+<i className="modus-icons">user_account</i>   // User account
+<i className="modus-icons">sign_in</i>        // Login
+<i className="modus-icons">sign_out</i>       // Logout
+<i className="modus-icons">lock</i>           // Locked/secure
+<i className="modus-icons">lock_open</i>      // Unlocked/open
+```
+
+## Icon Name Translation Guide
+
+### Common Mistakes & Corrections
+
+```tsx
+// ❌ Common mistakes → ✅ Correct alternatives
+gear          → settings
+user          → person
+trash         → delete
+plus          → add
+minus         → remove
+edit          → edit_combination
+save          → save_disk
+cog           → settings
+profile       → person
+bin           → delete
+```
+
+### Pattern Recognition
+
+- **Geometric shapes**: Use specific names (`triangle_up`, `circle_outline`)
+- **Arrows**: Include direction (`arrow_left`, `arrow_up_circle`)
+- **Actions**: Often use verb forms (`add`, `delete`, `edit_combination`)
+- **Status**: Usually descriptive (`check_circle`, `warning`, `info`)
+
+## Icon Usage Patterns
+
+### With Buttons
+
+```tsx
+// Icon-only button (requires aria-label)
+<Button aria-label="Delete item" size="icon">
+  <i className="modus-icons">delete</i>
+</Button>
+
+// Button with icon and text
+<Button>
+  <i className="modus-icons mr-2">add</i>
+  Add Item
+</Button>
+```
+
+### With Forms
+
+```tsx
+// Input with icon
+<div className="relative">
+  <Input className="pl-10" placeholder="Search..." />
+  <i className="modus-icons absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+    search
+  </i>
+</div>
+
+// Form field with status icon
+<div className="flex items-center gap-2">
+  <Input type="email" />
+  <i className="modus-icons text-green-600">check_circle</i>
+</div>
+```
+
+### With Navigation
+
+```tsx
+// Sidebar navigation
+<nav>
+  <a href="/dashboard" className="flex items-center gap-2">
+    <i className="modus-icons">dashboard</i>
+    Dashboard
+  </a>
+  <a href="/users" className="flex items-center gap-2">
+    <i className="modus-icons">people_group</i>
+    Users
+  </a>
+</nav>
+```
+
+## Styling with CSS Custom Properties
+
+### Size Variants
+
+```tsx
+// Use Tailwind text classes for consistent sizing
+<i className="modus-icons text-sm">info</i>      // Small
+<i className="modus-icons text-base">info</i>    // Default
+<i className="modus-icons text-lg">info</i>      // Large
+<i className="modus-icons text-xl">info</i>      // Extra large
+<i className="modus-icons text-2xl">info</i>     // 2X large
+```
+
+### Color Variants
+
+```tsx
+// Use theme colors for consistency
+<i className="modus-icons text-foreground">settings</i>
+<i className="modus-icons text-primary">check_circle</i>
+<i className="modus-icons text-destructive">warning</i>
+<i className="modus-icons text-muted-foreground">info</i>
+```
+
+## Accessibility Requirements
+
+### Icon-Only Elements
+
+```tsx
+// ✅ Required - Accessible label for icon-only buttons
+<button aria-label="Close dialog">
+  <i className="modus-icons">close</i>
+</button>
+
+// ✅ Required - Screen reader description
+<button aria-label="Download report as PDF">
+  <i className="modus-icons">download</i>
+</button>
+```
+
+### Decorative Icons
+
+```tsx
+// ✅ Mark decorative icons as hidden from screen readers
+<div className="flex items-center gap-2">
+  <i className="modus-icons" aria-hidden="true">
+    check_circle
+  </i>
+  <span>Task completed successfully</span>
+</div>
+```
+
+## Testing & Validation
+
+### Manual Testing
+
+1. **Visual Check**: Verify icon renders correctly
+2. **Size Check**: Ensure appropriate size in context
+3. **Color Check**: Confirm color matches design intent
+4. **Accessibility Check**: Test with screen reader
+
+### Automated Validation
+
+```bash
+# Icons are validated as part of the style validation
+npm run validate:styles    # Includes icon validation
+npm run lint              # ESLint catches invalid patterns
+```
+
+## Component Integration
+
+### Reusable Icon Component
+
+```tsx
+interface IconProps {
+  name: string;
+  size?: "sm" | "md" | "lg";
+  variant?: "default" | "primary" | "destructive";
+  "aria-label"?: string;
+  className?: string;
+}
+
+export function Icon({
+  name,
+  size = "md",
+  variant = "default",
+  "aria-label": ariaLabel,
+  className,
+}: IconProps) {
+  return (
+    <i
+      className={cn(
+        "modus-icons",
+        sizeClasses[size],
+        variantClasses[variant],
+        className
+      )}
+      aria-label={ariaLabel}
+      aria-hidden={!ariaLabel}
+    >
+      {name}
+    </i>
+  );
+}
+```
+
+## Key Rules Summary
+
+1. **Modus Icons ONLY** - No other icon libraries allowed
+2. **Validate Names** - Always verify icon exists before using
+3. **Proper Syntax** - Use `<i className="modus-icons">name</i>` pattern
+4. **Accessibility** - Include aria-label for icon-only elements
+5. **Consistency** - Use theme colors and standard sizing
+6. **Testing** - Verify rendering and accessibility
+
+# Modus Icons Reference & Validation
+
+**Remember**: Invalid icon names fail silently - always test your icons render correctly.
+**CRITICAL**: Modus Icons are the ONLY icon system allowed. Always validate icon names before using them.
+
+## Icon Validation Process (MANDATORY)
+
+### Step 1: Check Icon Existence
+
+Before using any icon, verify it exists in the official Modus Icons collection.
+
+### Step 2: Use Correct Syntax
+
+```tsx
+// ✅ REQUIRED - Modus icons only
+<i className="modus-icons">icon_name</i>;
+
+// ❌ FORBIDDEN - Other icon libraries
+import { Icon } from "lucide-react"; // NOT ALLOWED
+import { FaIcon } from "react-icons"; // NOT ALLOWED
+import { Icon } from "@heroicons/react"; // NOT ALLOWED
+```
+
+### Step 3: Validate Rendering
+
+Test that the icon renders correctly. Invalid names result in no icon display.
+
+## Common Icon Categories
+
+### Navigation & Actions
+
+```tsx
+<i className="modus-icons">menu</i>           // Hamburger menu
+<i className="modus-icons">close</i>          // Close/X button
+<i className="modus-icons">arrow_back</i>     // Back navigation
+<i className="modus-icons">arrow_next</i>     // Forward navigation
+<i className="modus-icons">home</i>           // Home page
+<i className="modus-icons">dashboard</i>      // Dashboard
+<i className="modus-icons">search</i>         // Search functionality
+<i className="modus-icons">filter</i>         // Filter controls
+<i className="modus-icons">settings</i>       // Settings/configuration
+```
+
+### CRUD Operations
+
+```tsx
+<i className="modus-icons">add</i>              // Add/create new
+<i className="modus-icons">edit_combination</i> // Edit existing
+<i className="modus-icons">delete</i>           // Delete/remove
+<i className="modus-icons">save_disk</i>        // Save data
+<i className="modus-icons">copy_content</i>     // Copy content
+<i className="modus-icons">download</i>         // Download files
+<i className="modus-icons">upload</i>           // Upload files
+```
+
+### Status & Feedback
+
+```tsx
+<i className="modus-icons">check_circle</i>     // Success/completed
+<i className="modus-icons">cancel_circle</i>    // Error/cancelled
+<i className="modus-icons">warning</i>          // Warning state
+<i className="modus-icons">info</i>             // Information
+<i className="modus-icons">help</i>             // Help/assistance
+<i className="modus-icons">alert</i>            // Alert/attention
+```
+
+### Content Types
+
+```tsx
+<i className="modus-icons">file</i>           // Generic file
+<i className="modus-icons">folder_open</i>    // Open folder
+<i className="modus-icons">folder_closed</i>  // Closed folder
+<i className="modus-icons">document</i>       // Document file
+<i className="modus-icons">image</i>          // Image file
+<i className="modus-icons">video</i>          // Video file
+<i className="modus-icons">calendar</i>       // Calendar/dates
+<i className="modus-icons">email</i>          // Email/messages
+```
+
+### User & Account
+
+```tsx
+<i className="modus-icons">person</i>         // Single user
+<i className="modus-icons">people_group</i>   // Multiple users
+<i className="modus-icons">user_account</i>   // User account
+<i className="modus-icons">sign_in</i>        // Login
+<i className="modus-icons">sign_out</i>       // Logout
+<i className="modus-icons">lock</i>           // Locked/secure
+<i className="modus-icons">lock_open</i>      // Unlocked/open
+```
+
+## Icon Name Translation Guide
+
+### Common Mistakes & Corrections
+
+```tsx
+// ❌ Common mistakes → ✅ Correct alternatives
+gear          → settings
+user          → person
+trash         → delete
+plus          → add
+minus         → remove
+edit          → edit_combination
+save          → save_disk
+cog           → settings
+profile       → person
+bin           → delete
+```
+
+### Pattern Recognition
+
+- **Geometric shapes**: Use specific names (`triangle_up`, `circle_outline`)
+- **Arrows**: Include direction (`arrow_left`, `arrow_up_circle`)
+- **Actions**: Often use verb forms (`add`, `delete`, `edit_combination`)
+- **Status**: Usually descriptive (`check_circle`, `warning`, `info`)
+
+## Icon Usage Patterns
+
+### With Buttons
+
+```tsx
+// Icon-only button (requires aria-label)
+<Button aria-label="Delete item" size="icon">
+  <i className="modus-icons">delete</i>
+</Button>
+
+// Button with icon and text
+<Button>
+  <i className="modus-icons mr-2">add</i>
+  Add Item
+</Button>
+```
+
+### With Forms
+
+```tsx
+// Input with icon
+<div className="relative">
+  <Input className="pl-10" placeholder="Search..." />
+  <i className="modus-icons absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+    search
+  </i>
+</div>
+
+// Form field with status icon
+<div className="flex items-center gap-2">
+  <Input type="email" />
+  <i className="modus-icons text-green-600">check_circle</i>
+</div>
+```
+
+### With Navigation
+
+```tsx
+// Sidebar navigation
+<nav>
+  <a href="/dashboard" className="flex items-center gap-2">
+    <i className="modus-icons">dashboard</i>
+    Dashboard
+  </a>
+  <a href="/users" className="flex items-center gap-2">
+    <i className="modus-icons">people_group</i>
+    Users
+  </a>
+</nav>
+```
+
+## Styling with CSS Custom Properties
+
+### Size Variants
+
+```tsx
+// Use Tailwind text classes for consistent sizing
+<i className="modus-icons text-sm">info</i>      // Small
+<i className="modus-icons text-base">info</i>    // Default
+<i className="modus-icons text-lg">info</i>      // Large
+<i className="modus-icons text-xl">info</i>      // Extra large
+<i className="modus-icons text-2xl">info</i>     // 2X large
+```
+
+### Color Variants
+
+```tsx
+// Use theme colors for consistency
+<i className="modus-icons text-foreground">settings</i>
+<i className="modus-icons text-primary">check_circle</i>
+<i className="modus-icons text-destructive">warning</i>
+<i className="modus-icons text-muted-foreground">info</i>
+```
+
+## Accessibility Requirements
+
+### Icon-Only Elements
+
+```tsx
+// ✅ Required - Accessible label for icon-only buttons
+<button aria-label="Close dialog">
+  <i className="modus-icons">close</i>
+</button>
+
+// ✅ Required - Screen reader description
+<button aria-label="Download report as PDF">
+  <i className="modus-icons">download</i>
+</button>
+```
+
+### Decorative Icons
+
+```tsx
+// ✅ Mark decorative icons as hidden from screen readers
+<div className="flex items-center gap-2">
+  <i className="modus-icons" aria-hidden="true">
+    check_circle
+  </i>
+  <span>Task completed successfully</span>
+</div>
+```
+
+## Testing & Validation
+
+### Manual Testing
+
+1. **Visual Check**: Verify icon renders correctly
+2. **Size Check**: Ensure appropriate size in context
+3. **Color Check**: Confirm color matches design intent
+4. **Accessibility Check**: Test with screen reader
+
+### Automated Validation
+
+```bash
+# Icons are validated as part of the style validation
+npm run validate:styles    # Includes icon validation
+npm run lint              # ESLint catches invalid patterns
+```
+
+## Component Integration
+
+### Reusable Icon Component
+
+```tsx
+interface IconProps {
+  name: string;
+  size?: "sm" | "md" | "lg";
+  variant?: "default" | "primary" | "destructive";
+  "aria-label"?: string;
+  className?: string;
+}
+
+export function Icon({
+  name,
+  size = "md",
+  variant = "default",
+  "aria-label": ariaLabel,
+  className,
+}: IconProps) {
+  return (
+    <i
+      className={cn(
+        "modus-icons",
+        sizeClasses[size],
+        variantClasses[variant],
+        className
+      )}
+      aria-label={ariaLabel}
+      aria-hidden={!ariaLabel}
+    >
+      {name}
+    </i>
+  );
+}
+```
+
+## Key Rules Summary
+
+1. **Modus Icons ONLY** - No other icon libraries allowed
+2. **Validate Names** - Always verify icon exists before using
+3. **Proper Syntax** - Use `<i className="modus-icons">name</i>` pattern
+4. **Accessibility** - Include aria-label for icon-only elements
+5. **Consistency** - Use theme colors and standard sizing
+6. **Testing** - Verify rendering and accessibility

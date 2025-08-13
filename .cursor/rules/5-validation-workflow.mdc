@@ -1,0 +1,631 @@
+---
+alwaysApply: true
+---
+
+# Validation & Development Workflow
+
+**Remember**: The workflow is not optional - it's the foundation for maintaining high-quality, consistent code across the entire project.
+
+**CRITICAL**: Every development task MUST follow this workflow. No exceptions.
+
+## Mandatory Development Workflow
+
+### Phase 1: Todo List Creation (NEVER SKIP)
+
+```bash
+# BEFORE any development work - MANDATORY
+📝 CREATE TODO LIST using todo_write tool
+```
+
+**Requirements:**
+
+- Break down complex tasks into specific, actionable items
+- Mark only ONE todo as "in_progress" at any time
+- Update status in real-time as you work
+- Mark todos "completed" immediately when finished
+
+### Phase 2: Analysis & Planning
+
+```bash
+🎯 ANALYZE requirements against project standards
+```
+
+**Check Against:**
+
+- Framework standards (Next.js 15 + React 19)
+- ShadCN component requirements
+- CSS custom properties usage
+- Modus icons validation
+- Code quality limits (300 lines/component, 50 lines/function)
+
+### Phase 3: Implementation
+
+```bash
+💻 IMPLEMENT using established patterns
+```
+
+**Required Patterns:**
+
+- ShadCN components only (no native HTML elements)
+- CSS custom properties from globals.css
+- Modus icons with validated names
+- React 19 features (use(), useActionState, useOptimistic)
+- Component template structure
+
+### Phase 4: Code Review
+
+```bash
+🔍 REVIEW code for quality and consistency
+```
+
+**Review Checklist:**
+
+- [ ] File naming: kebab-case files, PascalCase components
+- [ ] Size limits: Components <300 lines, functions <50 lines
+- [ ] State management: ≤5 useState calls per component
+- [ ] Error handling: Proper boundaries and validation
+- [ ] Accessibility: ARIA labels, keyboard navigation
+- [ ] Documentation: JSDoc for complex functions
+
+### Phase 5: Validation (MANDATORY)
+
+```bash
+✅ VALIDATE with automated tools - REQUIRED
+```
+
+**Critical Validation Commands:**
+
+```bash
+# MANDATORY before task completion
+npm run validate:styles    # Comprehensive validation (REQUIRED)
+npm run lint:colors       # Color validation only
+npm run lint              # ESLint validation
+npm run build             # Production build check
+```
+
+### Phase 6: Completion
+
+```bash
+✅ MARK TODOS COMPLETE when finished
+```
+
+**Final Checklist:**
+
+- [ ] All validation commands pass
+- [ ] No ESLint errors or warnings
+- [ ] No hardcoded colors or styles
+- [ ] Icons render correctly
+- [ ] Accessibility standards met
+- [ ] Todos marked complete
+
+## Validation Requirements (MANDATORY)
+
+### ESLint Validation
+
+**Catches:**
+
+- Hardcoded Tailwind colors (`text-blue-500`, `bg-red-400`)
+- Invalid Modus icon usage patterns
+- TypeScript strict mode violations
+- Accessibility rule violations
+- Code quality standard violations
+
+### Style Validation
+
+**Enforces:**
+
+- CSS custom properties usage only
+- No inline styles with hardcoded values
+- Proper color variable usage
+- Dark mode compatibility
+
+### Pre-commit Hooks
+
+**Automatically prevents:**
+
+- Code with styling violations from being committed
+- Invalid icon implementations
+- TypeScript errors
+- ESLint rule violations
+
+## Integration with Memory System
+
+### How Rules + Memories Work Together
+
+**Rules (These .mdc files):**
+
+- Foundational, version-controlled standards
+- Framework requirements and patterns
+- Validation and quality standards
+
+**Memories (Cursor's learned context):**
+
+- Project-specific preferences and decisions
+- Team choices and architectural patterns
+- Session-based learnings and corrections
+
+**Synergy Benefits:**
+
+- **Consistent Quality**: Rules ensure baseline standards
+- **Adaptive Learning**: Memories capture project nuances
+- **Automated Enforcement**: Validation prevents violations
+- **Continuous Improvement**: Memory system learns from corrections
+
+### Memory Integration Examples
+
+```tsx
+// Rule defines: "Use ShadCN components only"
+// Memory might capture: "Team prefers Card over div for layout containers"
+// Result: AI suggests Card components consistently
+
+// Rule defines: "Use CSS custom properties"
+// Memory might capture: "Project uses specific spacing pattern: p-[var(--spacing)]"
+// Result: AI uses established spacing patterns automatically
+```
+
+## Command Reference
+
+### Development Commands
+
+```bash
+# Start development with Turbopack (faster)
+npm run dev --turbopack
+
+# Linting & validation
+npm run lint              # ESLint validation
+npm run lint:colors       # Color-specific validation
+npm run validate:styles   # Comprehensive validation (MANDATORY)
+
+# Build & deployment
+npm run build             # Production build
+npm run start             # Production server
+```
+
+### Validation Workflow
+
+```bash
+# During development
+npm run lint              # Quick ESLint check
+
+# Before committing (MANDATORY)
+npm run validate:styles   # Full validation suite
+
+# Before deployment
+npm run build             # Ensure production build works
+```
+
+## Quality Assurance Integration
+
+### Automated Quality Gates
+
+**ESLint Rules:**
+
+- Enforce ShadCN component usage
+- Catch hardcoded colors and styles
+- Validate Modus icon implementations
+- Ensure TypeScript strict compliance
+
+**Pre-commit Hooks:**
+
+- Run validation before allowing commits
+- Prevent violations from entering codebase
+- Maintain consistent code quality
+
+**Build Validation:**
+
+- Production build must succeed
+- No TypeScript errors allowed
+- All imports must resolve correctly
+
+### Manual Quality Checks
+
+**Code Review Points:**
+
+- Component follows mandatory template structure
+- Uses React 19 patterns appropriately
+- Implements proper error handling
+- Includes accessibility attributes
+- Has appropriate documentation
+
+**Testing Requirements:**
+
+- Components render without errors
+- Icons display correctly
+- Dark mode works properly
+- Accessibility features function
+- Performance meets standards
+
+## Error Resolution Patterns
+
+### Common Issues & Solutions
+
+**ESLint Color Violations:**
+
+```bash
+# Issue: ESLint error about hardcoded colors
+# Solution: Replace with CSS custom properties
+❌ className="text-blue-500 bg-white"
+✅ className="text-primary bg-background"
+```
+
+**Icon Rendering Issues:**
+
+```bash
+# Issue: Icon not displaying
+# Solution: Validate icon name against Modus list
+❌ <i className="modus-icons">gear</i>
+✅ <i className="modus-icons">settings</i>
+```
+
+**Component Size Violations:**
+
+```bash
+# Issue: Component exceeds 300 lines
+# Solution: Split into smaller components
+❌ 500-line monolithic component
+✅ Multiple focused components with clear responsibilities
+```
+
+### Debugging Validation Failures
+
+**Step 1:** Run specific validation
+
+```bash
+npm run lint:colors  # Check color issues only
+```
+
+**Step 2:** Review error messages
+
+- ESLint errors show exact line and rule
+- Color validation highlights hardcoded values
+- Build errors show TypeScript issues
+
+**Step 3:** Apply fixes systematically
+
+- Fix one category of issues at a time
+- Re-run validation after each fix
+- Ensure all validation passes before proceeding
+
+## Success Metrics
+
+### Project Quality Indicators
+
+- [ ] **100% validation pass rate** - All checks pass consistently
+- [ ] **Zero hardcoded colors** - CSS custom properties used exclusively
+- [ ] **Valid Modus icons only** - No rendering failures
+- [ ] **ShadCN components used** - No native HTML elements in UI
+- [ ] **React 19 patterns** - Modern hooks and patterns utilized
+- [ ] **Accessibility compliance** - ARIA labels and keyboard navigation
+- [ ] **Performance standards** - Proper memoization and optimization
+
+### Development Efficiency
+
+- [ ] **Todo workflow followed** - Systematic task management
+- [ ] **Memory integration active** - AI learns project patterns
+- [ ] **Validation automated** - Pre-commit hooks prevent issues
+- [ ] **Documentation current** - JSDoc and component documentation
+- [ ] **Build success** - Production builds work consistently
+
+## Integration Summary
+
+This validation workflow ensures:
+
+1. **Systematic Development** - Todo-driven task management
+2. **Quality Enforcement** - Automated validation and standards
+3. **Memory Learning** - AI adapts to project patterns
+4. **Consistency** - Standardized patterns across codebase
+5. **Efficiency** - Automated quality gates and pre-commit hooks
+
+# Validation & Development Workflow
+
+**Remember**: The workflow is not optional - it's the foundation for maintaining high-quality, consistent code across the entire project.
+
+**CRITICAL**: Every development task MUST follow this workflow. No exceptions.
+
+## Mandatory Development Workflow
+
+### Phase 1: Todo List Creation (NEVER SKIP)
+
+```bash
+# BEFORE any development work - MANDATORY
+📝 CREATE TODO LIST using todo_write tool
+```
+
+**Requirements:**
+
+- Break down complex tasks into specific, actionable items
+- Mark only ONE todo as "in_progress" at any time
+- Update status in real-time as you work
+- Mark todos "completed" immediately when finished
+
+### Phase 2: Analysis & Planning
+
+```bash
+🎯 ANALYZE requirements against project standards
+```
+
+**Check Against:**
+
+- Framework standards (Next.js 15 + React 19)
+- ShadCN component requirements
+- CSS custom properties usage
+- Modus icons validation
+- Code quality limits (300 lines/component, 50 lines/function)
+
+### Phase 3: Implementation
+
+```bash
+💻 IMPLEMENT using established patterns
+```
+
+**Required Patterns:**
+
+- ShadCN components only (no native HTML elements)
+- CSS custom properties from globals.css
+- Modus icons with validated names
+- React 19 features (use(), useActionState, useOptimistic)
+- Component template structure
+
+### Phase 4: Code Review
+
+```bash
+🔍 REVIEW code for quality and consistency
+```
+
+**Review Checklist:**
+
+- [ ] File naming: kebab-case files, PascalCase components
+- [ ] Size limits: Components <300 lines, functions <50 lines
+- [ ] State management: ≤5 useState calls per component
+- [ ] Error handling: Proper boundaries and validation
+- [ ] Accessibility: ARIA labels, keyboard navigation
+- [ ] Documentation: JSDoc for complex functions
+
+### Phase 5: Validation (MANDATORY)
+
+```bash
+✅ VALIDATE with automated tools - REQUIRED
+```
+
+**Critical Validation Commands:**
+
+```bash
+# MANDATORY before task completion
+npm run validate:styles    # Comprehensive validation (REQUIRED)
+npm run lint:colors       # Color validation only
+npm run lint              # ESLint validation
+npm run build             # Production build check
+```
+
+### Phase 6: Completion
+
+```bash
+✅ MARK TODOS COMPLETE when finished
+```
+
+**Final Checklist:**
+
+- [ ] All validation commands pass
+- [ ] No ESLint errors or warnings
+- [ ] No hardcoded colors or styles
+- [ ] Icons render correctly
+- [ ] Accessibility standards met
+- [ ] Todos marked complete
+
+## Validation Requirements (MANDATORY)
+
+### ESLint Validation
+
+**Catches:**
+
+- Hardcoded Tailwind colors (`text-blue-500`, `bg-red-400`)
+- Invalid Modus icon usage patterns
+- TypeScript strict mode violations
+- Accessibility rule violations
+- Code quality standard violations
+
+### Style Validation
+
+**Enforces:**
+
+- CSS custom properties usage only
+- No inline styles with hardcoded values
+- Proper color variable usage
+- Dark mode compatibility
+
+### Pre-commit Hooks
+
+**Automatically prevents:**
+
+- Code with styling violations from being committed
+- Invalid icon implementations
+- TypeScript errors
+- ESLint rule violations
+
+## Integration with Memory System
+
+### How Rules + Memories Work Together
+
+**Rules (These .mdc files):**
+
+- Foundational, version-controlled standards
+- Framework requirements and patterns
+- Validation and quality standards
+
+**Memories (Cursor's learned context):**
+
+- Project-specific preferences and decisions
+- Team choices and architectural patterns
+- Session-based learnings and corrections
+
+**Synergy Benefits:**
+
+- **Consistent Quality**: Rules ensure baseline standards
+- **Adaptive Learning**: Memories capture project nuances
+- **Automated Enforcement**: Validation prevents violations
+- **Continuous Improvement**: Memory system learns from corrections
+
+### Memory Integration Examples
+
+```tsx
+// Rule defines: "Use ShadCN components only"
+// Memory might capture: "Team prefers Card over div for layout containers"
+// Result: AI suggests Card components consistently
+
+// Rule defines: "Use CSS custom properties"
+// Memory might capture: "Project uses specific spacing pattern: p-[var(--spacing)]"
+// Result: AI uses established spacing patterns automatically
+```
+
+## Command Reference
+
+### Development Commands
+
+```bash
+# Start development with Turbopack (faster)
+npm run dev --turbopack
+
+# Linting & validation
+npm run lint              # ESLint validation
+npm run lint:colors       # Color-specific validation
+npm run validate:styles   # Comprehensive validation (MANDATORY)
+
+# Build & deployment
+npm run build             # Production build
+npm run start             # Production server
+```
+
+### Validation Workflow
+
+```bash
+# During development
+npm run lint              # Quick ESLint check
+
+# Before committing (MANDATORY)
+npm run validate:styles   # Full validation suite
+
+# Before deployment
+npm run build             # Ensure production build works
+```
+
+## Quality Assurance Integration
+
+### Automated Quality Gates
+
+**ESLint Rules:**
+
+- Enforce ShadCN component usage
+- Catch hardcoded colors and styles
+- Validate Modus icon implementations
+- Ensure TypeScript strict compliance
+
+**Pre-commit Hooks:**
+
+- Run validation before allowing commits
+- Prevent violations from entering codebase
+- Maintain consistent code quality
+
+**Build Validation:**
+
+- Production build must succeed
+- No TypeScript errors allowed
+- All imports must resolve correctly
+
+### Manual Quality Checks
+
+**Code Review Points:**
+
+- Component follows mandatory template structure
+- Uses React 19 patterns appropriately
+- Implements proper error handling
+- Includes accessibility attributes
+- Has appropriate documentation
+
+**Testing Requirements:**
+
+- Components render without errors
+- Icons display correctly
+- Dark mode works properly
+- Accessibility features function
+- Performance meets standards
+
+## Error Resolution Patterns
+
+### Common Issues & Solutions
+
+**ESLint Color Violations:**
+
+```bash
+# Issue: ESLint error about hardcoded colors
+# Solution: Replace with CSS custom properties
+❌ className="text-blue-500 bg-white"
+✅ className="text-primary bg-background"
+```
+
+**Icon Rendering Issues:**
+
+```bash
+# Issue: Icon not displaying
+# Solution: Validate icon name against Modus list
+❌ <i className="modus-icons">gear</i>
+✅ <i className="modus-icons">settings</i>
+```
+
+**Component Size Violations:**
+
+```bash
+# Issue: Component exceeds 300 lines
+# Solution: Split into smaller components
+❌ 500-line monolithic component
+✅ Multiple focused components with clear responsibilities
+```
+
+### Debugging Validation Failures
+
+**Step 1:** Run specific validation
+
+```bash
+npm run lint:colors  # Check color issues only
+```
+
+**Step 2:** Review error messages
+
+- ESLint errors show exact line and rule
+- Color validation highlights hardcoded values
+- Build errors show TypeScript issues
+
+**Step 3:** Apply fixes systematically
+
+- Fix one category of issues at a time
+- Re-run validation after each fix
+- Ensure all validation passes before proceeding
+
+## Success Metrics
+
+### Project Quality Indicators
+
+- [ ] **100% validation pass rate** - All checks pass consistently
+- [ ] **Zero hardcoded colors** - CSS custom properties used exclusively
+- [ ] **Valid Modus icons only** - No rendering failures
+- [ ] **ShadCN components used** - No native HTML elements in UI
+- [ ] **React 19 patterns** - Modern hooks and patterns utilized
+- [ ] **Accessibility compliance** - ARIA labels and keyboard navigation
+- [ ] **Performance standards** - Proper memoization and optimization
+
+### Development Efficiency
+
+- [ ] **Todo workflow followed** - Systematic task management
+- [ ] **Memory integration active** - AI learns project patterns
+- [ ] **Validation automated** - Pre-commit hooks prevent issues
+- [ ] **Documentation current** - JSDoc and component documentation
+- [ ] **Build success** - Production builds work consistently
+
+## Integration Summary
+
+This validation workflow ensures:
+
+1. **Systematic Development** - Todo-driven task management
+2. **Quality Enforcement** - Automated validation and standards
+3. **Memory Learning** - AI adapts to project patterns
+4. **Consistency** - Standardized patterns across codebase
+5. **Efficiency** - Automated quality gates and pre-commit hooks

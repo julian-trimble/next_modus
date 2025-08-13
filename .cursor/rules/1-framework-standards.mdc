@@ -1,0 +1,313 @@
+---
+alwaysApply: true
+---
+
+# Framework Standards & Development Workflow
+
+**MANDATORY WORKFLOW**: Before ANY development task, create a comprehensive todo list using the `todo_write` tool. This is non-negotiable.
+
+## Core Framework Requirements
+
+### Next.js 15 + React 19 (MANDATORY)
+
+- **App Router ONLY**: No Pages Router allowed
+- **Client Components**: Default for UI showcase components (use "use client" directive)
+- **Server Components**: Only for static layouts, SEO pages, server-side data fetching
+- **React 19 Features**: Use `use()`, `useActionState`, `useOptimistic` over legacy patterns
+- **TypeScript**: Strict mode, no `any` types allowed
+
+### File Naming (NON-NEGOTIABLE)
+
+```bash
+# Files: kebab-case (MANDATORY)
+user-profile.tsx
+data-table.tsx
+order-summary.tsx
+
+# Components: PascalCase
+UserProfile
+DataTable
+OrderSummary
+```
+
+## ShadCN Component Hierarchy (MANDATORY)
+
+**CRITICAL**: Always use ShadCN components from `/components/ui` - NEVER use native HTML elements for UI.
+
+### Required Import Pattern
+
+```tsx
+// ✅ REQUIRED - Always import ShadCN components
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+// ❌ FORBIDDEN - Native HTML elements
+<button className="...">Submit</button>
+<input type="text" className="..." />
+```
+
+### Component Priority Order
+
+1. **Form Elements**: Button, Input, Textarea, Select, Checkbox, Switch
+2. **Layout**: Card, Separator, Tabs, Accordion, Collapsible
+3. **Feedback**: Alert, Badge, Progress, Skeleton, Sonner
+4. **Overlays**: Dialog, Sheet, Popover, Tooltip, HoverCard
+
+## Mandatory Development Workflow
+
+### Every Task Must Follow:
+
+1. **📝 CREATE TODO LIST** (using `todo_write` tool) - NEVER SKIP
+2. **🎯 ANALYZE** requirements against project standards
+3. **💻 IMPLEMENT** using established patterns
+4. **🔍 REVIEW** code for quality and consistency
+5. **✅ VALIDATE** with `npm run validate:styles` - MANDATORY
+6. **✅ MARK TODOS COMPLETE** when finished
+
+### Critical Validation Commands
+
+```bash
+# MANDATORY before task completion
+npm run validate:styles    # Comprehensive validation (REQUIRED)
+npm run lint:colors       # Color validation only
+npm run lint             # ESLint validation
+```
+
+## React 19 Pattern Examples
+
+### Use React 19 Features
+
+```tsx
+// ✅ React 19 - use() hook instead of useEffect + useState
+function UserProfile({ userPromise }: { userPromise: Promise<User> }) {
+  const user = use(userPromise);
+  return <div>{user.name}</div>;
+}
+
+// ✅ React 19 - useActionState for forms
+const [state, formAction, isPending] = useActionState(updateUserAction, null);
+
+// ✅ React 19 - useOptimistic for UI updates
+const [optimisticTodos, addOptimisticTodo] = useOptimistic(todos, updateFn);
+```
+
+### Component Template (MANDATORY)
+
+```tsx
+"use client";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { type HTMLAttributes } from "react";
+
+interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
+  title: string;
+  variant?: "default" | "primary" | "secondary";
+  onAction?: () => void;
+  children?: React.ReactNode;
+}
+
+/**
+ * Component description and purpose
+ * @param title - The main title to display
+ * @param variant - Visual style variant
+ */
+export function Component({
+  title,
+  variant = "default",
+  onAction,
+  className,
+  children,
+  ...props
+}: ComponentProps) {
+  return (
+    <Card className={cn("p-[var(--spacing)]", className)} {...props}>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {children}
+        <Button variant={variant} onClick={onAction}>
+          Action
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+## Integration with Memory System
+
+These rules work with Cursor Memories to:
+
+- **Capture** project-specific preferences and patterns
+- **Remember** team decisions and architectural choices
+- **Maintain** consistency across development sessions
+- **Enforce** standards through automated validation
+
+## Key Success Metrics
+
+- [ ] Todo list created for every task
+- [ ] ShadCN components used exclusively
+- [ ] CSS custom properties only (no hardcoded colors)
+- [ ] Validation passes (`npm run validate:styles`)
+- [ ] React 19 patterns leveraged
+- [ ] File naming conventions followed
+- [ ] Components under 300 lines, functions under 50 lines
+
+# Framework Standards & Development Workflow
+
+**MANDATORY WORKFLOW**: Before ANY development task, create a comprehensive todo list using the `todo_write` tool. This is non-negotiable.
+
+## Core Framework Requirements
+
+### Next.js 15 + React 19 (MANDATORY)
+
+- **App Router ONLY**: No Pages Router allowed
+- **Client Components**: Default for UI showcase components (use "use client" directive)
+- **Server Components**: Only for static layouts, SEO pages, server-side data fetching
+- **React 19 Features**: Use `use()`, `useActionState`, `useOptimistic` over legacy patterns
+- **TypeScript**: Strict mode, no `any` types allowed
+
+### File Naming (NON-NEGOTIABLE)
+
+```bash
+# Files: kebab-case (MANDATORY)
+user-profile.tsx
+data-table.tsx
+order-summary.tsx
+
+# Components: PascalCase
+UserProfile
+DataTable
+OrderSummary
+```
+
+## ShadCN Component Hierarchy (MANDATORY)
+
+**CRITICAL**: Always use ShadCN components from `/components/ui` - NEVER use native HTML elements for UI.
+
+### Required Import Pattern
+
+```tsx
+// ✅ REQUIRED - Always import ShadCN components
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+// ❌ FORBIDDEN - Native HTML elements
+<button className="...">Submit</button>
+<input type="text" className="..." />
+```
+
+### Component Priority Order
+
+1. **Form Elements**: Button, Input, Textarea, Select, Checkbox, Switch
+2. **Layout**: Card, Separator, Tabs, Accordion, Collapsible
+3. **Feedback**: Alert, Badge, Progress, Skeleton, Sonner
+4. **Overlays**: Dialog, Sheet, Popover, Tooltip, HoverCard
+
+## Mandatory Development Workflow
+
+### Every Task Must Follow:
+
+1. **📝 CREATE TODO LIST** (using `todo_write` tool) - NEVER SKIP
+2. **🎯 ANALYZE** requirements against project standards
+3. **💻 IMPLEMENT** using established patterns
+4. **🔍 REVIEW** code for quality and consistency
+5. **✅ VALIDATE** with `npm run validate:styles` - MANDATORY
+6. **✅ MARK TODOS COMPLETE** when finished
+
+### Critical Validation Commands
+
+```bash
+# MANDATORY before task completion
+npm run validate:styles    # Comprehensive validation (REQUIRED)
+npm run lint:colors       # Color validation only
+npm run lint             # ESLint validation
+```
+
+## React 19 Pattern Examples
+
+### Use React 19 Features
+
+```tsx
+// ✅ React 19 - use() hook instead of useEffect + useState
+function UserProfile({ userPromise }: { userPromise: Promise<User> }) {
+  const user = use(userPromise);
+  return <div>{user.name}</div>;
+}
+
+// ✅ React 19 - useActionState for forms
+const [state, formAction, isPending] = useActionState(updateUserAction, null);
+
+// ✅ React 19 - useOptimistic for UI updates
+const [optimisticTodos, addOptimisticTodo] = useOptimistic(todos, updateFn);
+```
+
+### Component Template (MANDATORY)
+
+```tsx
+"use client";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { type HTMLAttributes } from "react";
+
+interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
+  title: string;
+  variant?: "default" | "primary" | "secondary";
+  onAction?: () => void;
+  children?: React.ReactNode;
+}
+
+/**
+ * Component description and purpose
+ * @param title - The main title to display
+ * @param variant - Visual style variant
+ */
+export function Component({
+  title,
+  variant = "default",
+  onAction,
+  className,
+  children,
+  ...props
+}: ComponentProps) {
+  return (
+    <Card className={cn("p-[var(--spacing)]", className)} {...props}>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {children}
+        <Button variant={variant} onClick={onAction}>
+          Action
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+## Integration with Memory System
+
+These rules work with Cursor Memories to:
+
+- **Capture** project-specific preferences and patterns
+- **Remember** team decisions and architectural choices
+- **Maintain** consistency across development sessions
+- **Enforce** standards through automated validation
+
+## Key Success Metrics
+
+- [ ] Todo list created for every task
+- [ ] ShadCN components used exclusively
+- [ ] CSS custom properties only (no hardcoded colors)
+- [ ] Validation passes (`npm run validate:styles`)
+- [ ] React 19 patterns leveraged
+- [ ] File naming conventions followed
+- [ ] Components under 300 lines, functions under 50 lines

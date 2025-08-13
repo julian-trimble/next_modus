@@ -1,0 +1,920 @@
+---
+description: When creating new components or pages
+alwaysApply: false
+---
+
+# Code Quality & Performance Standards
+
+**Remember**: Quality is enforced through ESLint rules, pre-commit hooks, and mandatory validation commands.
+
+**MANDATORY**: All code must meet strict quality standards. Components under 300 lines, functions under 50 lines, maximum 5 useState calls per component.
+
+## Size & Complexity Limits (NON-NEGOTIABLE)
+
+### Component Files
+
+- **Maximum 300 lines** per component file
+- **Maximum 50 lines** per function
+- **Maximum 5 useState** calls per component
+- **Split larger components** into sub-components
+- **Single Responsibility Principle** - one concern per component
+
+### Quality Enforcement
+
+```tsx
+// ✅ Good - Focused component
+function UserProfile({ user }: { user: User }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState(user);
+
+  if (!user) return <UserNotFound />;
+  if (isEditing) return <UserEditForm user={user} />;
+
+  return <UserDisplay user={user} onEdit={() => setIsEditing(true)} />;
+}
+
+// ❌ Too Complex - Split into multiple components
+function ComplexDashboard() {
+  const [users, setUsers] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [analytics, setAnalytics] = useState(null);
+  const [filters, setFilters] = useState({});
+  const [sorting, setSorting] = useState("date");
+  const [pagination, setPagination] = useState({ page: 1, limit: 10 });
+  // ... 300+ lines of JSX
+}
+```
+
+## File Organization Pattern (MANDATORY)
+
+### Import Order
+
+```typescript
+// 1. React & Next.js imports
+import { useState, useCallback } from "react";
+import dynamic from "next/dynamic";
+
+// 2. Third-party imports
+import { cn } from "@/lib/utils";
+
+// 3. Internal imports
+import { useStore } from "@/store";
+
+// 4. Type definitions
+interface ComponentProps {
+  title: string;
+  variant?: "default" | "primary";
+}
+
+// 5. Constants
+const DEFAULT_ITEMS_PER_PAGE = 10;
+
+// 6. Helper functions
+const formatDisplayName = (name: string) => {
+  return name.charAt(0).toUpperCase() + name.slice(1);
+};
+
+// 7. Component definition
+export function Component() {
+  // Implementation
+}
+```
+
+### Component Internal Organization
+
+```typescript
+export function Component() {
+  // 1. React 19 hooks first
+  const data = use(dataPromise);
+  const [state, setState] = useState();
+
+  // 2. Derived state & memoization
+  const processedData = useMemo(() => {
+    return data?.map((item) => ({ ...item, formatted: true }));
+  }, [data]);
+
+  // 3. Event handlers (memoized)
+  const handleClick = useCallback(() => {
+    onAction?.();
+  }, [onAction]);
+
+  // 4. Early returns for error states
+  if (!data) return <LoadingSpinner />;
+  if (error) return <ErrorDisplay error={error} />;
+
+  // 5. Render helpers
+  const renderItem = (item: Item) => <div key={item.id}>{item.name}</div>;
+
+  // 6. Return statement
+  return (
+    <div className="space-y-[var(--spacing)]">
+      {processedData.map(renderItem)}
+    </div>
+  );
+}
+```
+
+## Naming Conventions (MANDATORY)
+
+### File & Component Naming
+
+```typescript
+// Files: kebab-case (NON-NEGOTIABLE)
+user - profile.tsx;
+data - table.tsx;
+order - summary.tsx;
+payment - form.tsx;
+
+// Components: PascalCase
+UserProfile;
+DataTable;
+OrderSummary;
+PaymentForm;
+
+// Functions: camelCase with verb + noun
+const fetchUserData = async () => {};
+const updateProfile = () => {};
+const validateFormData = () => {};
+
+// Boolean variables: question format
+const isLoading = false;
+const hasPermission = true;
+const shouldUpdate = false;
+const canDelete = true;
+
+// Arrays: plural nouns
+const users = [];
+const activeItems = [];
+const selectedIds = [];
+
+// Constants: UPPER_SNAKE_CASE
+const MAX_RETRY_ATTEMPTS = 3;
+const API_ENDPOINTS = {
+  USERS: "/api/users",
+  POSTS: "/api/posts",
+} as const;
+```
+
+## Clean Code Practices
+
+### Early Returns (MANDATORY)
+
+```typescript
+// ✅ Preferred - Early returns
+function processUser(user: User) {
+  if (!user) return null;
+  if (!user.isActive) return <InactiveUser />;
+  if (!user.hasPermission) return <AccessDenied />;
+
+  return <ActiveUserContent user={user} />;
+}
+
+// ❌ Avoid - Deep nesting
+function processUser(user: User) {
+  if (user) {
+    if (user.isActive) {
+      if (user.hasPermission) {
+        return <ActiveUserContent user={user} />;
+      } else {
+        return <AccessDenied />;
+      }
+    } else {
+      return <InactiveUser />;
+    }
+  }
+  return null;
+}
+```
+
+### Conditional Rendering Patterns
+
+```typescript
+// ✅ Good - Clear render function
+const renderContent = () => {
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage error={error} />;
+  if (!data || data.length === 0) return <EmptyState />;
+
+  return <DataDisplay data={data} />;
+};
+
+// ✅ Good - Component composition
+function FeaturePage() {
+  return (
+    <ErrorBoundary fallback={<ErrorFallback />}>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <FeatureContent />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+```
+
+### Avoid Magic Numbers/Strings
+
+```typescript
+// ✅ Good - Named constants
+const PAGINATION_LIMIT = 10;
+const LOADING_STATES = {
+  IDLE: "idle",
+  LOADING: "loading",
+  SUCCESS: "success",
+  ERROR: "error",
+} as const;
+
+const VALIDATION_RULES = {
+  MIN_PASSWORD_LENGTH: 8,
+  MAX_USERNAME_LENGTH: 50,
+} as const;
+
+// Usage
+if (status === LOADING_STATES.LOADING) {
+  return <LoadingSpinner />;
+}
+
+if (password.length < VALIDATION_RULES.MIN_PASSWORD_LENGTH) {
+  return { error: "Password too short" };
+}
+```
+
+## Performance Standards
+
+### React 19 Optimizations (MANDATORY)
+
+```typescript
+// ✅ Use React 19 features
+const data = use(dataPromise); // Instead of useEffect + useState
+const [optimisticState, updateOptimistic] = useOptimistic(state, updateFn);
+const [formState, formAction, isPending] = useActionState(action, initialState);
+
+// ✅ Proper memoization strategies
+const memoizedCallback = useCallback(
+  (id: string) => handleItemClick(id),
+  [handleItemClick]
+);
+
+const memoizedValue = useMemo(
+  () => expensiveCalculation(prop1, prop2),
+  [prop1, prop2] // Specific dependencies only
+);
+```
+
+### Dynamic Imports for Performance
+
+```typescript
+// ✅ Lazy load heavy components
+const HeavyChart = dynamic(() => import("@/components/charts/heavy-chart"), {
+  loading: () => <Skeleton className="h-64 w-full" />,
+  ssr: false, // If client-side only
+});
+
+const AdminPanel = dynamic(() => import("@/components/admin/admin-panel"), {
+  loading: () => <div>Loading admin panel...</div>,
+});
+```
+
+### Component Composition over Prop Drilling
+
+```typescript
+// ✅ Preferred - Composition pattern
+function FeaturePage() {
+  return (
+    <FeatureProvider>
+      <FeatureHeader />
+      <FeatureContent />
+      <FeatureFooter />
+    </FeatureProvider>
+  );
+}
+
+// ❌ Avoid - Complex single component with many props
+function ComplexFeature({
+  userData,
+  preferences,
+  settings,
+  permissions,
+  theme,
+  locale,
+  // ... 20+ props
+}) {
+  // 500+ lines of code
+}
+```
+
+## Error Handling Standards
+
+### Type Guards & Validation
+
+```typescript
+// ✅ Type guards for data validation
+function isValidUser(data: unknown): data is User {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    "id" in data &&
+    "name" in data &&
+    "email" in data
+  );
+}
+
+function processUserData(data: unknown) {
+  if (!isValidUser(data)) {
+    throw new Error("Invalid user data format");
+  }
+
+  return processValidUser(data);
+}
+```
+
+### Error Boundaries (MANDATORY)
+
+```tsx
+// Wrap components that can fail
+function FeatureWrapper() {
+  return (
+    <ErrorBoundary
+      fallback={<ErrorFallback />}
+      onError={(error, errorInfo) => {
+        console.error("Feature error:", error, errorInfo);
+        // Log to monitoring service
+      }}
+    >
+      <FeatureComponent />
+    </ErrorBoundary>
+  );
+}
+```
+
+### Loading & Error State Patterns
+
+```tsx
+// ✅ Comprehensive state handling
+function DataComponent() {
+  const { data, error, isLoading } = useQuery();
+
+  if (isLoading) return <LoadingSkeleton />;
+  if (error) return <ErrorMessage error={error} retry={refetch} />;
+  if (!data || data.length === 0) return <EmptyState />;
+
+  return <DataList data={data} />;
+}
+```
+
+## Documentation Standards
+
+### JSDoc Format (MANDATORY)
+
+````typescript
+/**
+ * Processes user data and returns formatted result
+ *
+ * @param user - The user object to process
+ * @param options - Processing options including format and validation
+ * @returns Formatted user data with additional metadata
+ * @throws {ValidationError} When user data fails validation
+ * @throws {ProcessingError} When processing fails due to system issues
+ *
+ * @example
+ * ```tsx
+ * const result = processUserData(user, { format: 'display' });
+ * ```
+ */
+function processUserData(user: User, options: ProcessOptions): ProcessedUser {
+  // Implementation
+}
+````
+
+### Component Documentation
+
+```tsx
+/**
+ * UserProfile component displays user information with editing capabilities
+ *
+ * @param user - User data to display
+ * @param isEditable - Whether the profile can be edited
+ * @param onUpdate - Callback fired when user data is updated
+ */
+interface UserProfileProps {
+  user: User;
+  isEditable?: boolean;
+  onUpdate?: (user: User) => void;
+}
+```
+
+## Accessibility Requirements
+
+### ARIA Implementation (MANDATORY)
+
+```tsx
+// ✅ Proper accessibility attributes
+<button
+  aria-label="Delete user account"
+  aria-describedby="delete-warning"
+>
+  <i className="modus-icons">delete</i>
+</button>
+
+<div
+  role="tabpanel"
+  aria-labelledby="tab-settings"
+  tabIndex={0}
+>
+  Settings content
+</div>
+
+// ✅ Keyboard navigation support
+<div
+  tabIndex={0}
+  onKeyDown={(e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleAction();
+    }
+  }}
+>
+  Interactive content
+</div>
+```
+
+## Quality Assurance Checklist
+
+Before considering any code complete:
+
+- [ ] **Size Limits**: Component <300 lines, functions <50 lines
+- [ ] **State Management**: ≤5 useState calls per component
+- [ ] **Early Returns**: Used to avoid deep nesting
+- [ ] **Error Handling**: Proper error boundaries and validation
+- [ ] **Performance**: Proper memoization and React 19 patterns
+- [ ] **Accessibility**: ARIA labels and keyboard navigation
+- [ ] **Documentation**: JSDoc for complex functions
+- [ ] **Validation**: `npm run validate:styles` passes
+- [ ] **TypeScript**: No `any` types, strict compliance
+- [ ] **Testing**: Critical paths have test coverage
+
+## Integration Benefits
+
+These standards ensure:
+
+- **Maintainability**: Code is easy to understand and modify
+- **Performance**: Optimal React 19 patterns and memoization
+- **Accessibility**: Inclusive user experiences
+- **Quality**: Consistent patterns across the codebase
+- **Debugging**: Clear error handling and state management
+
+# Code Quality & Performance Standards
+
+**Remember**: Quality is enforced through ESLint rules, pre-commit hooks, and mandatory validation commands.
+
+**MANDATORY**: All code must meet strict quality standards. Components under 300 lines, functions under 50 lines, maximum 5 useState calls per component.
+
+## Size & Complexity Limits (NON-NEGOTIABLE)
+
+### Component Files
+
+- **Maximum 300 lines** per component file
+- **Maximum 50 lines** per function
+- **Maximum 5 useState** calls per component
+- **Split larger components** into sub-components
+- **Single Responsibility Principle** - one concern per component
+
+### Quality Enforcement
+
+```tsx
+// ✅ Good - Focused component
+function UserProfile({ user }: { user: User }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState(user);
+
+  if (!user) return <UserNotFound />;
+  if (isEditing) return <UserEditForm user={user} />;
+
+  return <UserDisplay user={user} onEdit={() => setIsEditing(true)} />;
+}
+
+// ❌ Too Complex - Split into multiple components
+function ComplexDashboard() {
+  const [users, setUsers] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [analytics, setAnalytics] = useState(null);
+  const [filters, setFilters] = useState({});
+  const [sorting, setSorting] = useState("date");
+  const [pagination, setPagination] = useState({ page: 1, limit: 10 });
+  // ... 300+ lines of JSX
+}
+```
+
+## File Organization Pattern (MANDATORY)
+
+### Import Order
+
+```typescript
+// 1. React & Next.js imports
+import { useState, useCallback } from "react";
+import dynamic from "next/dynamic";
+
+// 2. Third-party imports
+import { cn } from "@/lib/utils";
+
+// 3. Internal imports
+import { useStore } from "@/store";
+
+// 4. Type definitions
+interface ComponentProps {
+  title: string;
+  variant?: "default" | "primary";
+}
+
+// 5. Constants
+const DEFAULT_ITEMS_PER_PAGE = 10;
+
+// 6. Helper functions
+const formatDisplayName = (name: string) => {
+  return name.charAt(0).toUpperCase() + name.slice(1);
+};
+
+// 7. Component definition
+export function Component() {
+  // Implementation
+}
+```
+
+### Component Internal Organization
+
+```typescript
+export function Component() {
+  // 1. React 19 hooks first
+  const data = use(dataPromise);
+  const [state, setState] = useState();
+
+  // 2. Derived state & memoization
+  const processedData = useMemo(() => {
+    return data?.map((item) => ({ ...item, formatted: true }));
+  }, [data]);
+
+  // 3. Event handlers (memoized)
+  const handleClick = useCallback(() => {
+    onAction?.();
+  }, [onAction]);
+
+  // 4. Early returns for error states
+  if (!data) return <LoadingSpinner />;
+  if (error) return <ErrorDisplay error={error} />;
+
+  // 5. Render helpers
+  const renderItem = (item: Item) => <div key={item.id}>{item.name}</div>;
+
+  // 6. Return statement
+  return (
+    <div className="space-y-[var(--spacing)]">
+      {processedData.map(renderItem)}
+    </div>
+  );
+}
+```
+
+## Naming Conventions (MANDATORY)
+
+### File & Component Naming
+
+```typescript
+// Files: kebab-case (NON-NEGOTIABLE)
+user - profile.tsx;
+data - table.tsx;
+order - summary.tsx;
+payment - form.tsx;
+
+// Components: PascalCase
+UserProfile;
+DataTable;
+OrderSummary;
+PaymentForm;
+
+// Functions: camelCase with verb + noun
+const fetchUserData = async () => {};
+const updateProfile = () => {};
+const validateFormData = () => {};
+
+// Boolean variables: question format
+const isLoading = false;
+const hasPermission = true;
+const shouldUpdate = false;
+const canDelete = true;
+
+// Arrays: plural nouns
+const users = [];
+const activeItems = [];
+const selectedIds = [];
+
+// Constants: UPPER_SNAKE_CASE
+const MAX_RETRY_ATTEMPTS = 3;
+const API_ENDPOINTS = {
+  USERS: "/api/users",
+  POSTS: "/api/posts",
+} as const;
+```
+
+## Clean Code Practices
+
+### Early Returns (MANDATORY)
+
+```typescript
+// ✅ Preferred - Early returns
+function processUser(user: User) {
+  if (!user) return null;
+  if (!user.isActive) return <InactiveUser />;
+  if (!user.hasPermission) return <AccessDenied />;
+
+  return <ActiveUserContent user={user} />;
+}
+
+// ❌ Avoid - Deep nesting
+function processUser(user: User) {
+  if (user) {
+    if (user.isActive) {
+      if (user.hasPermission) {
+        return <ActiveUserContent user={user} />;
+      } else {
+        return <AccessDenied />;
+      }
+    } else {
+      return <InactiveUser />;
+    }
+  }
+  return null;
+}
+```
+
+### Conditional Rendering Patterns
+
+```typescript
+// ✅ Good - Clear render function
+const renderContent = () => {
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage error={error} />;
+  if (!data || data.length === 0) return <EmptyState />;
+
+  return <DataDisplay data={data} />;
+};
+
+// ✅ Good - Component composition
+function FeaturePage() {
+  return (
+    <ErrorBoundary fallback={<ErrorFallback />}>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <FeatureContent />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+```
+
+### Avoid Magic Numbers/Strings
+
+```typescript
+// ✅ Good - Named constants
+const PAGINATION_LIMIT = 10;
+const LOADING_STATES = {
+  IDLE: "idle",
+  LOADING: "loading",
+  SUCCESS: "success",
+  ERROR: "error",
+} as const;
+
+const VALIDATION_RULES = {
+  MIN_PASSWORD_LENGTH: 8,
+  MAX_USERNAME_LENGTH: 50,
+} as const;
+
+// Usage
+if (status === LOADING_STATES.LOADING) {
+  return <LoadingSpinner />;
+}
+
+if (password.length < VALIDATION_RULES.MIN_PASSWORD_LENGTH) {
+  return { error: "Password too short" };
+}
+```
+
+## Performance Standards
+
+### React 19 Optimizations (MANDATORY)
+
+```typescript
+// ✅ Use React 19 features
+const data = use(dataPromise); // Instead of useEffect + useState
+const [optimisticState, updateOptimistic] = useOptimistic(state, updateFn);
+const [formState, formAction, isPending] = useActionState(action, initialState);
+
+// ✅ Proper memoization strategies
+const memoizedCallback = useCallback(
+  (id: string) => handleItemClick(id),
+  [handleItemClick]
+);
+
+const memoizedValue = useMemo(
+  () => expensiveCalculation(prop1, prop2),
+  [prop1, prop2] // Specific dependencies only
+);
+```
+
+### Dynamic Imports for Performance
+
+```typescript
+// ✅ Lazy load heavy components
+const HeavyChart = dynamic(() => import("@/components/charts/heavy-chart"), {
+  loading: () => <Skeleton className="h-64 w-full" />,
+  ssr: false, // If client-side only
+});
+
+const AdminPanel = dynamic(() => import("@/components/admin/admin-panel"), {
+  loading: () => <div>Loading admin panel...</div>,
+});
+```
+
+### Component Composition over Prop Drilling
+
+```typescript
+// ✅ Preferred - Composition pattern
+function FeaturePage() {
+  return (
+    <FeatureProvider>
+      <FeatureHeader />
+      <FeatureContent />
+      <FeatureFooter />
+    </FeatureProvider>
+  );
+}
+
+// ❌ Avoid - Complex single component with many props
+function ComplexFeature({
+  userData,
+  preferences,
+  settings,
+  permissions,
+  theme,
+  locale,
+  // ... 20+ props
+}) {
+  // 500+ lines of code
+}
+```
+
+## Error Handling Standards
+
+### Type Guards & Validation
+
+```typescript
+// ✅ Type guards for data validation
+function isValidUser(data: unknown): data is User {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    "id" in data &&
+    "name" in data &&
+    "email" in data
+  );
+}
+
+function processUserData(data: unknown) {
+  if (!isValidUser(data)) {
+    throw new Error("Invalid user data format");
+  }
+
+  return processValidUser(data);
+}
+```
+
+### Error Boundaries (MANDATORY)
+
+```tsx
+// Wrap components that can fail
+function FeatureWrapper() {
+  return (
+    <ErrorBoundary
+      fallback={<ErrorFallback />}
+      onError={(error, errorInfo) => {
+        console.error("Feature error:", error, errorInfo);
+        // Log to monitoring service
+      }}
+    >
+      <FeatureComponent />
+    </ErrorBoundary>
+  );
+}
+```
+
+### Loading & Error State Patterns
+
+```tsx
+// ✅ Comprehensive state handling
+function DataComponent() {
+  const { data, error, isLoading } = useQuery();
+
+  if (isLoading) return <LoadingSkeleton />;
+  if (error) return <ErrorMessage error={error} retry={refetch} />;
+  if (!data || data.length === 0) return <EmptyState />;
+
+  return <DataList data={data} />;
+}
+```
+
+## Documentation Standards
+
+### JSDoc Format (MANDATORY)
+
+````typescript
+/**
+ * Processes user data and returns formatted result
+ *
+ * @param user - The user object to process
+ * @param options - Processing options including format and validation
+ * @returns Formatted user data with additional metadata
+ * @throws {ValidationError} When user data fails validation
+ * @throws {ProcessingError} When processing fails due to system issues
+ *
+ * @example
+ * ```tsx
+ * const result = processUserData(user, { format: 'display' });
+ * ```
+ */
+function processUserData(user: User, options: ProcessOptions): ProcessedUser {
+  // Implementation
+}
+````
+
+### Component Documentation
+
+```tsx
+/**
+ * UserProfile component displays user information with editing capabilities
+ *
+ * @param user - User data to display
+ * @param isEditable - Whether the profile can be edited
+ * @param onUpdate - Callback fired when user data is updated
+ */
+interface UserProfileProps {
+  user: User;
+  isEditable?: boolean;
+  onUpdate?: (user: User) => void;
+}
+```
+
+## Accessibility Requirements
+
+### ARIA Implementation (MANDATORY)
+
+```tsx
+// ✅ Proper accessibility attributes
+<button
+  aria-label="Delete user account"
+  aria-describedby="delete-warning"
+>
+  <i className="modus-icons">delete</i>
+</button>
+
+<div
+  role="tabpanel"
+  aria-labelledby="tab-settings"
+  tabIndex={0}
+>
+  Settings content
+</div>
+
+// ✅ Keyboard navigation support
+<div
+  tabIndex={0}
+  onKeyDown={(e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleAction();
+    }
+  }}
+>
+  Interactive content
+</div>
+```
+
+## Quality Assurance Checklist
+
+Before considering any code complete:
+
+- [ ] **Size Limits**: Component <300 lines, functions <50 lines
+- [ ] **State Management**: ≤5 useState calls per component
+- [ ] **Early Returns**: Used to avoid deep nesting
+- [ ] **Error Handling**: Proper error boundaries and validation
+- [ ] **Performance**: Proper memoization and React 19 patterns
+- [ ] **Accessibility**: ARIA labels and keyboard navigation
+- [ ] **Documentation**: JSDoc for complex functions
+- [ ] **Validation**: `npm run validate:styles` passes
+- [ ] **TypeScript**: No `any` types, strict compliance
+- [ ] **Testing**: Critical paths have test coverage
+
+## Integration Benefits
+
+These standards ensure:
+
+- **Maintainability**: Code is easy to understand and modify
+- **Performance**: Optimal React 19 patterns and memoization
+- **Accessibility**: Inclusive user experiences
+- **Quality**: Consistent patterns across the codebase
+- **Debugging**: Clear error handling and state management
