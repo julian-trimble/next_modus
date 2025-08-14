@@ -4,7 +4,7 @@ This is a comprehensive showcase and a boilerplate of UI components built with *
 
 ## 🌐 Live Demo
 
-**Experience the full component showcase live:**  
+**Experience the full component showcase live:**  https://main.d1m87766iu37kz.amplifyapp.com/ 
 
 ![Demo Screenshot](./public/demo.png)
 
