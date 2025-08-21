@@ -1,3 +1,5 @@
+[![Use this template](https://img.shields.io/badge/Use_this_template-111111)](https://github.com/julianoczkowski/next_modus/generate)
+
 # Next.js 15 Modus - Styled Components Boilerplate
 
 This is a comprehensive showcase and a boilerplate of UI components built with **Next.js 15**, **ShadCN**, and **Tailwind CSS**. The project serves as a visual library and a starting point for building modern, responsive, and themeable web applications.
