@@ -6,7 +6,7 @@ This is a comprehensive showcase and a boilerplate of UI components built with *
 
 ## 🌐 Live Demo
 
-**Experience the full component showcase live:**  https://main.d1m87766iu37kz.amplifyapp.com/ 
+**Experience the full component showcase live:** https://julianoczkowski.github.io/next_modus/
 
 ![Demo Screenshot](./public/demo.png)
 
