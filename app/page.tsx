@@ -12,6 +12,9 @@ import {
 
 import Link from "next/link";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const asset = (path: string) => `${BASE_PATH}${path}`;
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-secondary/30 to-secondary/60">
@@ -20,7 +23,7 @@ export default function Home() {
         <div className="text-center space-y-6">
           <Image
             className="mx-auto dark:invert"
-            src="/modus-logo.svg"
+            src={asset("/modus-logo.svg")}
             alt="Modus Logo"
             width={240}
             height={50}
@@ -59,7 +62,7 @@ export default function Home() {
             </Button>
             <Button variant="outline" size="lg" asChild>
               <Link
-                href="https://github.com/julianoczkowski/nextjs15-modus-styled"
+                href="https://github.com/julianoczkowski/next_modus"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -230,7 +233,7 @@ export default function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6 items-center justify-items-center">
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/trimble.svg"
+                  src={asset("/trimble_product_logos/trimble.svg")}
                   alt="Trimble"
                   width={120}
                   height={48}
@@ -240,7 +243,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/tekla.svg"
+                  src={asset("/trimble_product_logos/tekla.svg")}
                   alt="Tekla"
                   width={120}
                   height={48}
@@ -249,7 +252,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/connect.svg"
+                  src={asset("/trimble_product_logos/connect.svg")}
                   alt="Connect"
                   width={120}
                   height={48}
@@ -258,7 +261,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/fieldlink.svg"
+                  src={asset("/trimble_product_logos/fieldlink.svg")}
                   alt="FieldLink"
                   width={120}
                   height={48}
@@ -267,7 +270,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/accubid-anywhere.svg"
+                  src={asset("/trimble_product_logos/accubid-anywhere.svg")}
                   alt="AccuBid Anywhere"
                   width={120}
                   height={48}
@@ -276,7 +279,9 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/construction-analytics.svg"
+                  src={asset(
+                    "/trimble_product_logos/construction-analytics.svg"
+                  )}
                   alt="Construction Analytics"
                   width={120}
                   height={48}
@@ -285,7 +290,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/stabicad.svg"
+                  src={asset("/trimble_product_logos/stabicad.svg")}
                   alt="StabiCAD"
                   width={120}
                   height={48}
@@ -294,7 +299,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/prodesign.svg"
+                  src={asset("/trimble_product_logos/prodesign.svg")}
                   alt="ProDesign"
                   width={120}
                   height={48}
@@ -303,7 +308,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/fabshop.svg"
+                  src={asset("/trimble_product_logos/fabshop.svg")}
                   alt="FabShop"
                   width={120}
                   height={48}
@@ -312,7 +317,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/estimation-mep.svg"
+                  src={asset("/trimble_product_logos/estimation-mep.svg")}
                   alt="Estimation MEP"
                   width={120}
                   height={48}
@@ -321,7 +326,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/sysque.svg"
+                  src={asset("/trimble_product_logos/sysque.svg")}
                   alt="Sysque"
                   width={120}
                   height={48}
@@ -330,7 +335,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/trade-servicelive.svg"
+                  src={asset("/trimble_product_logos/trade-servicelive.svg")}
                   alt="Trade ServiceLive"
                   width={120}
                   height={48}
@@ -339,7 +344,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/luckinslive.svg"
+                  src={asset("/trimble_product_logos/luckinslive.svg")}
                   alt="LuckinsLive"
                   width={120}
                   height={48}
@@ -348,7 +353,7 @@ export default function Home() {
               </div>
               <div className="h-12 flex items-center justify-center">
                 <Image
-                  src="/trimble_product_logos/allpriser.svg"
+                  src={asset("/trimble_product_logos/allpriser.svg")}
                   alt="Allpriser"
                   width={120}
                   height={48}

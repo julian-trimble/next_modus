@@ -125,11 +125,14 @@ export function AppHeader({
   const getLogoSrc = () => {
     if (logoSrc) return logoSrc;
 
+    const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+    const asset = (path: string) => `${BASE_PATH}${path}`;
+
     // Use resolvedTheme to get the actual theme (light/dark) after hydration
     const currentTheme = resolvedTheme || theme;
     return currentTheme === "dark"
-      ? "/trimble_product_logos/trimble.svg"
-      : "/trimble_product_logos/trimble.svg";
+      ? asset("/trimble_product_logos/trimble.svg")
+      : asset("/trimble_product_logos/trimble.svg");
   };
 
   return (

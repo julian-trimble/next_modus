@@ -307,6 +307,12 @@ const componentDescriptions: { [key: string]: string } = {
     "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
 };
 
+export function generateStaticParams() {
+  return Object.keys(showcaseComponents).map((slug) => ({ slug }));
+}
+
+export const dynamic = "force-static";
+
 export default async function ComponentPage({
   params,
 }: {
